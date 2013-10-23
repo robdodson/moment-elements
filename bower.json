@@ -1,0 +1,26 @@
+{
+  "name": "moment-components",
+  "version": "0.0.1",
+  "authors": [
+    "Rob Dodson <lets.email.rob@gmail.com>"
+  ],
+  "description": "Moment.js converted to Web Components",
+  "main": "imports/moment.html",
+  "keywords": [
+    "moment",
+    "web components",
+    "date"
+  ],
+  "license": "MIT",
+  "homepage": "http://robdodson.me",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "moment": "~2.2.1"
+  }
+}

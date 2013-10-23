@@ -1,0 +1,86 @@
+<script>
+  (function (window, moment, undefined) {
+    // thisDoc refers to the "importee", which is chart.html
+    var thisDoc = document.currentScript.ownerDocument;
+
+    // thatDoc refers to the "importer", which is index.html
+    var thatDoc = document;
+
+    var MomentProto = Object.create(HTMLElement.prototype);
+
+    MomentProto.init = function(str) {
+      this._moment = moment(str);
+    };
+
+    MomentProto.getMoment = function() {
+      return this._moment;
+    }
+
+
+    /**
+     * Moment.now()
+     */
+
+    // Make sure you extend an existing HTMLElement prototype
+    var MomentNowProto = Object.create(MomentProto);
+
+    // Setup optional lifecycle callbacks: createdCallback,
+    // enteredDocumentCallback, leftDocumentCallback and
+    // attributeChangedCallback
+    MomentNowProto.createdCallback = function() {
+      this.init();
+      this.root = this.createShadowRoot();
+      this.root.textContent = this.getMoment();
+    };
+
+    var MomentNow = thatDoc.register('moment-now', { prototype: MomentNowProto });
+
+
+    /**
+     * Moment.parse()
+     */
+    
+    var MomentParseProto = Object.create(MomentProto);
+
+    MomentParseProto.createdCallback = function() {
+      this.init(this.textContent);
+      this.root = this.createShadowRoot();
+      this.root.textContent = this.getMoment();
+    };
+
+    var MomentParse = thatDoc.register('moment-parse', { prototype: MomentParseProto });
+
+
+    /**
+     * Moment.format()
+     */
+    
+    var MomentFormatProto = Object.create(MomentProto);
+
+    MomentFormatProto.createdCallback = function() {
+      this.init(this.firstElementChild.getMoment());
+      this.root = this.createShadowRoot();
+      var tokens = this.getAttribute('tokens') || 'YYYY-MM-DD';
+      this.root.textContent = this.getMoment().format(tokens);
+    };
+
+    var MomentFormat = thatDoc.register('moment-format', { prototype: MomentFormatProto });
+
+
+    /**
+     * Moment.from()
+     */
+    
+    var MomentFromProto = Object.create(MomentProto);
+
+    MomentFromProto.createdCallback = function() {
+      this.init(this.firstElementChild.getMoment());
+      this.root = this.createShadowRoot();
+      var from = this.lastElementChild.getMoment();
+      this.root.textContent = this.getMoment().from(from);
+    };
+
+    var MomentFrom = thatDoc.register('moment-from', { prototype: MomentFromProto });
+    
+  }(window, moment));
+</script>
